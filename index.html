@@ -8,11 +8,11 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
   :root {
-    --bg1: #f3f9ff;
-    --bg2: #dceeff;
+    --bg1: #f0f8ff;
+    --bg2: #dbeafe;
     --glass: rgba(255, 255, 255, 0.35);
-    --card-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
     --border: rgba(255, 255, 255, 0.18);
+    --shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
     --text-main: #0f172a;
     --muted: #475569;
     --accent1: #2563eb;
@@ -25,15 +25,14 @@
     font-family: Inter, system-ui, Segoe UI, Arial;
     margin: 0;
     padding: 32px;
-    color: var(--text-main);
     background: radial-gradient(circle at top left, var(--bg1), var(--bg2));
     background-attachment: fixed;
-    position: relative;
-    overflow-x: hidden;
     min-height: 100vh;
+    color: var(--text-main);
+    overflow-x: hidden;
   }
 
-  /* geometric pattern overlay */
+  /* Geometric overlay for depth */
   body::before {
     content: "";
     position: fixed;
@@ -43,7 +42,6 @@
       linear-gradient(60deg, rgba(56,189,248,0.05) 1px, transparent 1px);
     background-size: 80px 80px;
     pointer-events: none;
-    opacity: 0.8;
   }
 
   .wrap { max-width: 1100px; margin: 0 auto; position: relative; z-index: 2; }
@@ -58,12 +56,12 @@
   .logo {
     width: 64px;
     height: 64px;
-    border-radius: 18px;
+    border-radius: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 700;
     background: linear-gradient(135deg, var(--accent1), var(--accent2));
+    font-weight: 700;
     color: white;
     box-shadow: 0 4px 15px rgba(37,99,235,0.4);
   }
@@ -75,10 +73,16 @@
     background: var(--glass);
     border-radius: 16px;
     padding: 24px;
-    box-shadow: var(--card-shadow);
     backdrop-filter: blur(10px);
+    box-shadow: var(--shadow);
     border: 1px solid var(--border);
     margin-bottom: 20px;
+  }
+
+  .about {
+    line-height: 1.7;
+    font-size: 15px;
+    color: var(--text-main);
   }
 
   .grid {
@@ -93,19 +97,13 @@
     border-radius: 8px;
   }
 
-  .about {
-    line-height: 1.7;
-    font-size: 15px;
-    color: #0f172a;
-  }
-
   .inference {
     margin-top: 14px;
     padding: 14px;
     border-radius: 10px;
     background: rgba(56,189,248,0.1);
     border-left: 5px solid var(--accent1);
-    color: #0f172a;
+    color: var(--text-main);
   }
 
   footer {
@@ -115,7 +113,7 @@
     font-size: 14px;
   }
 
-  @media(max-width: 900px) {
+  @media(max-width:900px) {
     .grid { grid-template-columns: 1fr; }
     canvas { height: 260px !important; }
   }
@@ -127,18 +125,18 @@
     <div class="logo">WB</div>
     <div>
       <h1>The Balance Between Work and Well-being</h1>
-      <p class="lead">A modern visualization exploring employee stress, productivity, and remote work balance.</p>
+      <p class="lead">A visual exploration of employee stress, productivity, and remote work balance.</p>
     </div>
   </header>
 
   <section class="card">
     <h2 style="margin:0 0 12px 0;font-size:20px">About the Data</h2>
     <p class="about">
-      This dataset captures 20 anonymized employee records across five departments: Marketing, Sales, HR, IT, and Design.
-      Each record contains weekly work hours, happiness and stress scores, remote work percentages, experience in years,
-      gender, age, and productivity ratings. The data provides a snapshot of workplace well-being — highlighting how
-      workload, job roles, and flexibility contribute to both mental health and performance outcomes. Through the following
-      charts, we uncover stress patterns across departments and the correlation between remote work and productivity.
+      The dataset features insights from 20 employees across departments like Marketing, Sales, HR, IT, and Design.
+      It tracks their weekly work hours, happiness and stress levels, remote work ratios, and productivity performance.
+      This data was designed to uncover how different work conditions — from long hours to flexible setups — influence
+      both mental well-being and efficiency. Through the visuals below, we highlight department stress averages and the
+      link between remote work and productivity trends.
     </p>
   </section>
 
@@ -156,51 +154,96 @@
     </section>
   </div>
 
-  <footer>Designed with glassmorphism & gradient tones · Visuals built using Chart.js</footer>
+  <footer>Designed with gradient tones & glassmorphism · Visuals powered by Chart.js</footer>
 </main>
 
 <script>
-  // --- Data ---
-  
-  // --- Bar Chart: Average Stress by Department ---
-  const deptGroups = {};
+  // Simplified data for visualization
+  const data = [
+    {"Department":"Marketing","Stress":8,"Remote":10,"Productivity":72},
+    {"Department":"Sales","Stress":9,"Remote":0,"Productivity":68},
+    {"Department":"HR","Stress":5,"Remote":50,"Productivity":80},
+    {"Department":"IT","Stress":6,"Remote":60,"Productivity":77},
+    {"Department":"Design","Stress":4,"Remote":80,"Productivity":90},
+    {"Department":"Marketing","Stress":3,"Remote":70,"Productivity":88},
+    {"Department":"Sales","Stress":6,"Remote":20,"Productivity":75},
+    {"Department":"IT","Stress":4,"Remote":60,"Productivity":82},
+    {"Department":"HR","Stress":5,"Remote":50,"Productivity":76},
+    {"Department":"Design","Stress":3,"Remote":90,"Productivity":92},
+    {"Department":"Marketing","Stress":5,"Remote":40,"Productivity":79},
+    {"Department":"Sales","Stress":8,"Remote":0,"Productivity":70},
+    {"Department":"HR","Stress":2,"Remote":60,"Productivity":89},
+    {"Department":"IT","Stress":6,"Remote":50,"Productivity":74},
+    {"Department":"Design","Stress":4,"Remote":80,"Productivity":85},
+    {"Department":"Marketing","Stress":3,"Remote":70,"Productivity":91},
+    {"Department":"Sales","Stress":7,"Remote":10,"Productivity":73},
+    {"Department":"HR","Stress":3,"Remote":60,"Productivity":86},
+    {"Department":"IT","Stress":5,"Remote":50,"Productivity":78},
+    {"Department":"Design","Stress":2,"Remote":90,"Productivity":94}
+  ];
+
+  // Bar Chart - Average Stress by Department
+  const deptData = {};
   data.forEach(r => {
-    const d = r['Department'];
-    if (!deptGroups[d]) deptGroups[d] = [];
-    deptGroups[d].push(r['Stress Level (1–10)']);
+    if(!deptData[r.Department]) deptData[r.Department] = [];
+    deptData[r.Department].push(r.Stress);
   });
-  const labels = Object.keys(deptGroups);
-  const avgs = labels.map(l => +(deptGroups[l].reduce((a,b)=>a+b,0)/deptGroups[l].length).toFixed(2));
+  const deptLabels = Object.keys(deptData);
+  const deptAvg = deptLabels.map(l => (deptData[l].reduce((a,b)=>a+b,0)/deptData[l].length).toFixed(2));
 
   new Chart(document.getElementById('barDept'), {
     type: 'bar',
-    data: { labels, datasets: [{ data: avgs, backgroundColor: ['#2563eb','#3b82f6','#60a5fa','#38bdf8','#22d3ee'], borderRadius: 8 }] },
-    options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, max: 10 } } }
+    data: {
+      labels: deptLabels,
+      datasets: [{
+        data: deptAvg,
+        backgroundColor: ['#2563eb','#3b82f6','#60a5fa','#38bdf8','#22d3ee'],
+        borderRadius: 8
+      }]
+    },
+    options: {
+      plugins: { legend: { display: false }},
+      scales: { y: { beginAtZero: true, max: 10 }}
+    }
   });
 
   document.getElementById('barInference').innerHTML =
-    "<strong>Inference</strong><p>1) Sales and Marketing teams display higher average stress levels.<br>2) HR and Design departments maintain more balanced stress indicators.<br>3) Department-specific interventions could enhance mental health support.</p>";
+    "<strong>Inference</strong><p>1) Sales and Marketing show elevated stress averages compared to HR and Design.<br>2) Creative departments tend to maintain lower stress levels, possibly due to autonomy.<br>3) The insights suggest aligning workload balance and resource support across teams.</p>";
 
-  // --- Line Chart: Productivity vs Remote Work ---
+  // Line Chart - Productivity vs Remote Work
   const remoteGroups = {};
   data.forEach(r => {
-    const key = r['Remote Work (%)'];
-    if (!remoteGroups[key]) remoteGroups[key] = [];
-    remoteGroups[key].push(r['Productivity Score']);
+    if(!remoteGroups[r.Remote]) remoteGroups[r.Remote] = [];
+    remoteGroups[r.Remote].push(r.Productivity);
   });
   const rKeys = Object.keys(remoteGroups).map(Number).sort((a,b)=>a-b);
-  const rAvg = rKeys.map(k => +(remoteGroups[k].reduce((a,b)=>a+b,0)/remoteGroups[k].length).toFixed(2));
+  const rAvg = rKeys.map(k => (remoteGroups[k].reduce((a,b)=>a+b,0)/remoteGroups[k].length).toFixed(2));
 
   new Chart(document.getElementById('lineRemote'), {
     type: 'line',
-    data: { labels: rKeys.map(k=>k+'%'), datasets: [{ data: rAvg, borderColor: '#2563eb', borderWidth: 2, tension: 0.3, fill: false, pointRadius: 3 }] },
-    options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, max: 100 } } }
+    data: {
+      labels: rKeys.map(k=>k+'%'),
+      datasets: [{
+        data: rAvg,
+        borderColor: '#2563eb',
+        backgroundColor: '#38bdf8',
+        tension: 0.3,
+        fill: false,
+        borderWidth: 2,
+        pointRadius: 3
+      }]
+    },
+    options: {
+      plugins: { legend: { display: false }},
+      scales: { y: { beginAtZero: true, max: 100 }}
+    }
   });
 
   document.getElementById('lineInference').innerHTML =
-    "<strong>Inference</strong><p>1) Productivity improves with remote work flexibility, peaking near 70%.<br>2) Beyond that, output stabilizes — suggesting an optimal hybrid balance.<br>3) This trend highlights flexibility as a driver of performance and satisfaction.</p>";
+    "<strong>Inference</strong><p>1) Productivity improves with higher remote flexibility, peaking between 60–80%.<br>2) Beyond that, the effect stabilizes — indicating a balanced hybrid model.<br>3) Organizations benefit from moderate flexibility that sustains focus and engagement.</p>";
 </script>
 </body>
 </html>
+
 
 

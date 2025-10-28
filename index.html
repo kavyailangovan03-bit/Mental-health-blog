@@ -127,106 +127,105 @@
     <div class="logo">WB</div>
     <div>
       <h1>The Balance Between Work and Well-being</h1>
-      <p class="lead">A modern visualization exploring employee stress, productivity, and remote work balance.</p>
+      <p class="lead">A visual exploration of employee stress, productivity, and remote work balance.</p>
     </div>
   </header>
 
-  <section class="card">
-    <h2 style="margin:0 0 12px 0;font-size:20px">About the Data</h2>
+  <section class="card" aria-labelledby="about-title">
+    <h2 id="about-title" style="margin:0 0 10px 0;font-size:18px">About the Data</h2>
     <p class="about">
-      This dataset captures 20 anonymized employee records across five departments: Marketing, Sales, HR, IT, and Design.
-      Each record contains weekly work hours, happiness and stress scores, remote work percentages, experience in years,
-      gender, age, and productivity ratings. The data provides a snapshot of workplace well-being — highlighting how
-      workload, job roles, and flexibility contribute to both mental health and performance outcomes. Through the following
-      charts, we uncover stress patterns across departments and the correlation between remote work and productivity.
+      The dataset represents insights from 20 employees across departments such as Marketing, Sales, HR, IT, and Design.
+      It includes key attributes like work hours, happiness scores, stress levels, remote work percentage, years of experience,
+      and productivity ratings. These data points reveal how workplace habits and remote flexibility impact both mental health
+      and output efficiency. This visualization aims to identify trends that can guide better work-life balance strategies
+      and improve organizational well-being.
     </p>
   </section>
 
   <div class="grid">
-    <section class="card">
-      <h3 style="margin:0 0 10px 0;font-size:17px">Bar Chart — Average Stress Level by Department</h3>
+    <section class="card" aria-labelledby="bar-title">
+      <h3 id="bar-title" style="margin:0 0 8px 0">Bar Chart — Average Stress Level by Department</h3>
       <canvas id="barDept"></canvas>
       <div id="barInference" class="inference"></div>
     </section>
 
-    <section class="card">
-      <h3 style="margin:0 0 10px 0;font-size:17px">Line Chart — Productivity vs Remote Work % (average trend)</h3>
+    <section class="card" aria-labelledby="line-title">
+      <h3 id="line-title" style="margin:0 0 8px 0">Line Chart — Productivity vs Remote Work % (average trend)</h3>
       <canvas id="lineRemote"></canvas>
       <div id="lineInference" class="inference"></div>
     </section>
   </div>
 
-  <footer>Designed with glassmorphism & gradient tones · Visuals built using Chart.js</footer>
+  <footer style="text-align:center;margin-top:18px;color:var(--muted)">
+    <small>Design: Calm Blue Gradient · Visuals: Chart.js</small>
+  </footer>
 </main>
 
 <script>
-  // --- Data ---
+  // Embedded data (20 records)
   const data = [
-    {"Employee ID":1,"Department":"Marketing","Stress Level (1–10)":8,"Remote Work (%)":10,"Productivity Score":72},
-    {"Employee ID":2,"Department":"Sales","Stress Level (1–10)":9,"Remote Work (%)":0,"Productivity Score":68},
-    {"Employee ID":3,"Department":"HR","Stress Level (1–10)":5,"Remote Work (%)":50,"Productivity Score":80},
-    {"Employee ID":4,"Department":"IT","Stress Level (1–10)":6,"Remote Work (%)":60,"Productivity Score":77},
-    {"Employee ID":5,"Department":"Design","Stress Level (1–10)":4,"Remote Work (%)":80,"Productivity Score":90},
-    {"Employee ID":6,"Department":"Marketing","Stress Level (1–10)":3,"Remote Work (%)":70,"Productivity Score":88},
-    {"Employee ID":7,"Department":"Sales","Stress Level (1–10)":6,"Remote Work (%)":20,"Productivity Score":75},
-    {"Employee ID":8,"Department":"IT","Stress Level (1–10)":4,"Remote Work (%)":60,"Productivity Score":82},
-    {"Employee ID":9,"Department":"HR","Stress Level (1–10)":5,"Remote Work (%)":50,"Productivity Score":76},
-    {"Employee ID":10,"Department":"Design","Stress Level (1–10)":3,"Remote Work (%)":90,"Productivity Score":92},
-    {"Employee ID":11,"Department":"Marketing","Stress Level (1–10)":5,"Remote Work (%)":40,"Productivity Score":79},
-    {"Employee ID":12,"Department":"Sales","Stress Level (1–10)":8,"Remote Work (%)":0,"Productivity Score":70},
-    {"Employee ID":13,"Department":"HR","Stress Level (1–10)":2,"Remote Work (%)":60,"Productivity Score":89},
-    {"Employee ID":14,"Department":"IT","Stress Level (1–10)":6,"Remote Work (%)":50,"Productivity Score":74},
-    {"Employee ID":15,"Department":"Design","Stress Level (1–10)":4,"Remote Work (%)":80,"Productivity Score":85},
-    {"Employee ID":16,"Department":"Marketing","Stress Level (1–10)":3,"Remote Work (%)":70,"Productivity Score":91},
-    {"Employee ID":17,"Department":"Sales","Stress Level (1–10)":7,"Remote Work (%)":10,"Productivity Score":73},
-    {"Employee ID":18,"Department":"HR","Stress Level (1–10)":3,"Remote Work (%)":60,"Productivity Score":86},
-    {"Employee ID":19,"Department":"IT","Stress Level (1–10)":5,"Remote Work (%)":50,"Productivity Score":78},
-    {"Employee ID":20,"Department":"Design","Stress Level (1–10)":2,"Remote Work (%)":90,"Productivity Score":94}
+    {"Employee ID":1,"Department":"Marketing","Work Hours per Week":52,"Happiness Score (1–10)":6,"Stress Level (1–10)":8,"Remote Work (%)":10,"Years at Company":3,"Gender":"F","Age":29,"Productivity Score":72},
+    {"Employee ID":2,"Department":"Sales","Work Hours per Week":60,"Happiness Score (1–10)":5,"Stress Level (1–10)":9,"Remote Work (%)":0,"Years at Company":4,"Gender":"M","Age":34,"Productivity Score":68},
+    {"Employee ID":3,"Department":"HR","Work Hours per Week":42,"Happiness Score (1–10)":8,"Stress Level (1–10)":5,"Remote Work (%)":50,"Years at Company":5,"Gender":"F","Age":31,"Productivity Score":80},
+    {"Employee ID":4,"Department":"IT","Work Hours per Week":48,"Happiness Score (1–10)":7,"Stress Level (1–10)":6,"Remote Work (%)":60,"Years at Company":2,"Gender":"M","Age":27,"Productivity Score":77},
+    {"Employee ID":5,"Department":"Design","Work Hours per Week":38,"Happiness Score (1–10)":9,"Stress Level (1–10)":4,"Remote Work (%)":80,"Years at Company":1,"Gender":"F","Age":25,"Productivity Score":90},
+    {"Employee ID":6,"Department":"Marketing","Work Hours per Week":55,"Happiness Score (1–10)":9,"Stress Level (1–10)":3,"Remote Work (%)":70,"Years at Company":2,"Gender":"M","Age":30,"Productivity Score":88},
+    {"Employee ID":7,"Department":"Sales","Work Hours per Week":58,"Happiness Score (1–10)":7,"Stress Level (1–10)":6,"Remote Work (%)":20,"Years at Company":6,"Gender":"F","Age":33,"Productivity Score":75},
+    {"Employee ID":8,"Department":"IT","Work Hours per Week":45,"Happiness Score (1–10)":8,"Stress Level (1–10)":4,"Remote Work (%)":60,"Years at Company":4,"Gender":"M","Age":28,"Productivity Score":82},
+    {"Employee ID":9,"Department":"HR","Work Hours per Week":40,"Happiness Score (1–10)":6,"Stress Level (1–10)":5,"Remote Work (%)":50,"Years at Company":3,"Gender":"F","Age":32,"Productivity Score":76},
+    {"Employee ID":10,"Department":"Design","Work Hours per Week":36,"Happiness Score (1–10)":8,"Stress Level (1–10)":3,"Remote Work (%)":90,"Years at Company":1,"Gender":"F","Age":26,"Productivity Score":92},
+    {"Employee ID":11,"Department":"Marketing","Work Hours per Week":50,"Happiness Score (1–10)":7,"Stress Level (1–10)":5,"Remote Work (%)":40,"Years at Company":5,"Gender":"M","Age":31,"Productivity Score":79},
+    {"Employee ID":12,"Department":"Sales","Work Hours per Week":62,"Happiness Score (1–10)":5,"Stress Level (1–10)":8,"Remote Work (%)":0,"Years at Company":6,"Gender":"F","Age":35,"Productivity Score":70},
+    {"Employee ID":13,"Department":"HR","Work Hours per Week":44,"Happiness Score (1–10)":9,"Stress Level (1–10)":2,"Remote Work (%)":60,"Years at Company":2,"Gender":"F","Age":29,"Productivity Score":89},
+    {"Employee ID":14,"Department":"IT","Work Hours per Week":46,"Happiness Score (1–10)":6,"Stress Level (1–10)":6,"Remote Work (%)":50,"Years at Company":3,"Gender":"M","Age":30,"Productivity Score":74},
+    {"Employee ID":15,"Department":"Design","Work Hours per Week":34,"Happiness Score (1–10)":7,"Stress Level (1–10)":4,"Remote Work (%)":80,"Years at Company":2,"Gender":"F","Age":27,"Productivity Score":85},
+    {"Employee ID":16,"Department":"Marketing","Work Hours per Week":54,"Happiness Score (1–10)":9,"Stress Level (1–10)":3,"Remote Work (%)":70,"Years at Company":4,"Gender":"M","Age":32,"Productivity Score":91},
+    {"Employee ID":17,"Department":"Sales","Work Hours per Week":59,"Happiness Score (1–10)":6,"Stress Level (1–10)":7,"Remote Work (%)":10,"Years at Company":5,"Gender":"F","Age":34,"Productivity Score":73},
+    {"Employee ID":18,"Department":"HR","Work Hours per Week":41,"Happiness Score (1–10)":8,"Stress Level (1–10)":3,"Remote Work (%)":60,"Years at Company":3,"Gender":"M","Age":28,"Productivity Score":86},
+    {"Employee ID":19,"Department":"IT","Work Hours per Week":47,"Happiness Score (1–10)":7,"Stress Level (1–10)":5,"Remote Work (%)":50,"Years at Company":4,"Gender":"F","Age":31,"Productivity Score":78},
+    {"Employee ID":20,"Department":"Design","Work Hours per Week":35,"Happiness Score (1–10)":8,"Stress Level (1–10)":2,"Remote Work (%)":90,"Years at Company":1,"Gender":"F","Age":26,"Productivity Score":94}
   ];
 
-  // --- Bar Chart: Average Stress by Department ---
+  // --- Bar Chart: Average Stress Level by Department ---
   const deptGroups = {};
   data.forEach(r => {
-    const d = r['Department'];
+    const d = r['Department'] || 'Unknown';
     if (!deptGroups[d]) deptGroups[d] = [];
-    deptGroups[d].push(r['Stress Level (1–10)']);
+    deptGroups[d].push(Number(r['Stress Level (1–10)'] || 0));
   });
-  const labels = Object.keys(deptGroups);
-  const avgs = labels.map(l => +(deptGroups[l].reduce((a,b)=>a+b,0)/deptGroups[l].length).toFixed(2));
+  const deptLabels = Object.keys(deptGroups);
+  const deptAverages = deptLabels.map(l => {
+    const arr = deptGroups[l];
+    return +(arr.reduce((s, v) => s + v, 0) / arr.length).toFixed(2);
+  });
 
-  new Chart(document.getElementById('barDept'), {
+  new Chart(document.getElementById('barDept').getContext('2d'), {
     type: 'bar',
-    data: { labels, datasets: [{ data: avgs, backgroundColor: ['#2563eb','#3b82f6','#60a5fa','#38bdf8','#22d3ee'], borderRadius: 8 }] },
+    data: { labels: deptLabels, datasets: [{ label: 'Avg Stress', data: deptAverages, backgroundColor: ['#2563eb','#3b82f6','#60a5fa','#38bdf8','#22d3ee'], borderRadius: 6 }] },
     options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, max: 10 } } }
   });
 
   document.getElementById('barInference').innerHTML =
-    "<strong>Inference</strong><p>1) Sales and Marketing teams display higher average stress levels.<br>2) HR and Design departments maintain more balanced stress indicators.<br>3) Department-specific interventions could enhance mental health support.</p>";
+    "<strong>Inference</strong><p>1) Sales and Marketing teams exhibit higher average stress levels.<br>2) HR and Design departments show relatively lower stress, suggesting balanced workloads.<br>3) These insights highlight the need for targeted stress management strategies.</p>";
 
-  // --- Line Chart: Productivity vs Remote Work ---
+  // --- Line Chart: Productivity vs Remote Work % ---
   const remoteGroups = {};
   data.forEach(r => {
-    const key = r['Remote Work (%)'];
-    if (!remoteGroups[key]) remoteGroups[key] = [];
-    remoteGroups[key].push(r['Productivity Score']);
+    const k = Number(r['Remote Work (%)'] || 0);
+    if (!remoteGroups[k]) remoteGroups[k] = [];
+    remoteGroups[k].push(Number(r['Productivity Score'] || 0));
   });
-  const rKeys = Object.keys(remoteGroups).map(Number).sort((a,b)=>a-b);
-  const rAvg = rKeys.map(k => +(remoteGroups[k].reduce((a,b)=>a+b,0)/remoteGroups[k].length).toFixed(2));
+  const remoteKeys = Object.keys(remoteGroups).map(Number).sort((a, b) => a - b);
+  const remoteAvgProd = remoteKeys.map(k => +(remoteGroups[k].reduce((s, v) => s + v, 0) / remoteGroups[k].length).toFixed(2));
 
-  new Chart(document.getElementById('lineRemote'), {
+  new Chart(document.getElementById('lineRemote').getContext('2d'), {
     type: 'line',
-    data: { labels: rKeys.map(k=>k+'%'), datasets: [{ data: rAvg, borderColor: '#2563eb', borderWidth: 2, tension: 0.3, fill: false, pointRadius: 3 }] },
+    data: { labels: remoteKeys.map(k => k + '%'), datasets: [{ label: 'Avg Productivity', data: remoteAvgProd, borderColor: '#2563eb', tension: 0.3, fill: false, pointRadius: 3, borderWidth: 2 }] },
     options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, max: 100 } } }
   });
 
   document.getElementById('lineInference').innerHTML =
-    "<strong>Inference</strong><p>1) Productivity improves with remote work flexibility, peaking near 70%.<br>2) Beyond that, output stabilizes — suggesting an optimal hybrid balance.<br>3) This trend highlights flexibility as a driver of performance and satisfaction.</p>";
+    "<strong>Inference</strong><p>1) Productivity rises steadily as remote work increases, stabilizing beyond 70%.<br>2) Excessive remote hours may reduce collaboration impact, leveling productivity.<br>3) Hybrid work balance appears most beneficial for sustained performance.</p>";
 </script>
 </body>
 </html>
-
-
-
-
-
-

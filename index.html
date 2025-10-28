@@ -3,143 +3,208 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>The Balance Between Work and Well-being</title>
+<title>When Data Meets Decisions: Lessons from BANKBARODA</title>
 
-<!-- Font + Chart.js (v4 UMD build) -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<!-- Fonts and Chart.js -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Merriweather:wght@700;900&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
 <style>
   :root{
-    --bg1:#f0f8ff; --bg2:#dbeafe; --glass:rgba(255,255,255,0.35);
-    --border:rgba(255,255,255,0.18); --shadow:0 8px 32px rgba(31,38,135,0.15);
-    --text:#0f172a; --muted:#475569; --accent1:#2563eb; --accent2:#38bdf8;
+    --bg:#ffffff; --muted:#6b7280; --accent:#111827; --line:#e6e6e6;
+    --card:#ffffff;
   }
   *{box-sizing:border-box}
-  body{
-    font-family:Inter,system-ui,Segoe UI,Arial;margin:0;padding:32px;
-    color:var(--text);
-    background:radial-gradient(circle at 10% 10%, var(--bg1), var(--bg2));
-    min-height:100vh; overflow-x:hidden;
+  body{font-family:Inter,system-ui,Segoe UI,Arial;background:var(--bg);color:var(--accent);margin:0;padding:36px 20px;line-height:1.65}
+  .container{max-width:880px;margin:0 auto}
+  /* Medium-like header */
+  .title{
+    font-family:Merriweather, serif;
+    font-weight:900;
+    font-size:48px;
+    margin:8px 0 6px 0;
+    letter-spacing:-0.02em;
+    line-height:1.02;
+    color:#0b1320;
   }
-  body::before{
-    content:"";position:fixed;inset:0;
-    background-image:linear-gradient(120deg, rgba(37,99,235,0.05) 1px, transparent 1px), linear-gradient(60deg, rgba(56,189,248,0.05) 1px, transparent 1px);
-    background-size:80px 80px;pointer-events:none;
+  .subtitle{font-size:20px;color:var(--muted);margin:0 0 18px 0;max-width:720px}
+  .author-bar{display:flex;align-items:center;gap:12px;margin:18px 0 24px 0}
+  .avatar{width:44px;height:44px;border-radius:999px;background:#f97316;color:white;display:flex;align-items:center;justify-content:center;font-weight:700}
+  .author-meta{display:flex;flex-direction:column}
+  .author-name{font-weight:600}
+  .meta-row{color:var(--muted);font-size:14px;margin-top:4px}
+  .follow-btn{margin-left:auto;padding:8px 12px;border-radius:8px;background:#111827;color:white;border:0;font-weight:600;cursor:pointer}
+  hr.sep{border:0;border-top:1px solid var(--line);margin:26px 0}
+
+  /* Article body */
+  h2{font-family:Merriweather,serif;font-weight:700;margin:24px 0 14px 0}
+  p{margin:14px 0;color:#111827}
+  .figure{display:block;margin:18px 0;border-radius:6px;overflow:hidden;background:#fafafa;padding:10px;border:1px solid #f0f0f0;text-align:center}
+  .figure img{max-width:100%;height:auto;display:block;margin:0 auto}
+  .inference-box{background:#fbfbfb;border-left:4px solid #111827;padding:12px 14px;border-radius:4px;margin:12px 0;color:#111827}
+  footer.medium-foot{border-top:1px solid var(--line);margin:28px 0 50px 0;padding-top:18px;color:var(--muted);font-size:14px}
+
+  /* Charts area (keeps visual harmony) */
+  .charts{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:10px}
+  .chart-card{background:#fff;border:1px solid #f3f4f6;padding:16px;border-radius:8px;box-shadow:0 6px 20px rgba(16,24,40,0.03)}
+  canvas{width:100% !important;height:260px !important}
+
+  /* responsive */
+  @media (max-width:900px){
+    .title{font-size:36px}
+    .charts{grid-template-columns:1fr}
+    canvas{height:300px !important}
+    .follow-btn{padding:8px 10px}
   }
-  .wrap{max-width:1100px;margin:0 auto;z-index:2;position:relative}
-  header{display:flex;align-items:center;gap:16px;margin-bottom:22px}
-  .logo{width:64px;height:64px;border-radius:16px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--accent1),var(--accent2));color:#fff;font-weight:700;box-shadow:0 4px 15px rgba(37,99,235,0.35)}
-  h1{margin:0;font-size:26px} .lead{margin:6px 0 0;color:var(--muted)}
-  .card{background:var(--glass);border-radius:16px;padding:24px;backdrop-filter:blur(10px);box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:20px}
-  .about{line-height:1.65;font-size:15px;color:var(--text)}
-  .grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-  canvas{width:100% !important;height:340px !important;border-radius:8px}
-  .inference{margin-top:14px;padding:14px;border-radius:10px;background:rgba(56,189,248,0.08);border-left:5px solid var(--accent1)}
-  footer{text-align:center;color:var(--muted);margin-top:24px;font-size:14px}
-  @media(max-width:900px){.grid{grid-template-columns:1fr}canvas{height:260px !important}}
 </style>
 </head>
 <body>
-<main class="wrap">
-  <header>
-    <div class="logo">WB</div>
-    <div>
-      <h1>The Balance Between Work and Well-being</h1>
-      <p class="lead">A focused dashboard exploring stress and productivity patterns.</p>
+  <div class="container">
+    <!-- Header -->
+    <div style="display:flex;flex-direction:column">
+      <h1 class="title">When Data Meets Decisions: Lessons from BANKBARODA</h1>
+      <p class="subtitle">How data visualization transforms raw financial numbers into meaningful, actionable insights.</p>
+
+      <div class="author-bar">
+        <div class="avatar">H</div>
+        <div class="author-meta">
+          <div class="author-name">Harshini</div>
+          <div class="meta-row">Harshini · Follow · 3 min read · Just now</div>
+        </div>
+        <button class="follow-btn" aria-label="Follow author">Follow</button>
+      </div>
+      <hr class="sep">
     </div>
-  </header>
 
-  <section class="card">
-    <h2 style="margin:0 0 12px 0;font-size:20px">About the Data</h2>
-    <p class="about">
-      This dataset contains 20 anonymized employee records across departments (Marketing, Sales, HR, IT, Design).
-      Fields include weekly work hours, happiness and stress scores (1–10), percentage remote work, tenure, gender, age,
-      and productivity scores. The visuals below highlight department-level stress and the relationship between remote
-      work and productivity to inform wellbeing and hybrid work policies.
+    <!-- Article content -->
+    <h2>Introduction</h2>
+    <p>
+      In the world of finance, every number tells a story — and every story shapes a decision. Through BANKBARODA’s equity data from 2024–2025, this analysis explores how data visualisation helps uncover hidden trends, interpret market behaviour, and translate figures into decisions that matter. We believe that when data meets decisions, insight becomes impact.
     </p>
-  </section>
 
-  <div class="grid">
-    <section class="card">
-      <h3 style="margin:0 0 10px 0;font-size:17px">Bar Chart — Average Stress Level by Department</h3>
-      <canvas id="barDept" aria-label="Bar chart showing average stress by department"></canvas>
-      <div id="barInference" class="inference" aria-live="polite"></div>
-    </section>
+    <h2>Close Price (Time Series)</h2>
+    <div class="figure">
+      <!-- Placeholder image or chart can go here: we'll use a canvas-based chart under Figures below -->
+      <canvas id="closeTime" aria-label="Time series chart"></canvas>
+    </div>
 
-    <section class="card">
-      <h3 style="margin:0 0 10px 0;font-size:17px">Line Chart — Productivity vs Remote Work % (average trend)</h3>
-      <canvas id="lineRemote" aria-label="Line chart showing productivity by remote work percent"></canvas>
-      <div id="lineInference" class="inference" aria-live="polite"></div>
-    </section>
+    <div class="inference-box">
+      <strong>Interpretation:</strong>
+      <p style="margin:8px 0 0">
+        The time-series chart of BANKBARODA’s closing prices between September 2024 and September 2025 reveals a dynamic pattern of market activity. In the early months, slight fluctuations indicate cautious investor sentiment, likely influenced by macroeconomic uncertainty and monetary policy adjustments.
+      </p>
+      <p style="margin:10px 0 0">
+        Midway through the period, noticeable upward movements correspond with positive quarterly earnings and strengthened asset quality — signalling renewed market confidence. Short-term dips represent profit-booking phases and broader market corrections, yet the sustained recovery trend highlights the bank’s resilience and ability to navigate volatility.
+      </p>
+    </div>
+
+    <div style="margin:18px 0">
+      <button style="background:#111827;color:#fff;border:0;padding:10px 14px;border-radius:8px;font-weight:600;cursor:pointer">Get Harshini’s stories in your inbox</button>
+      <div style="margin-top:10px;color:var(--muted);font-size:14px">Join Medium for free to get updates from this writer.</div>
+    </div>
+
+    <p style="margin-top:18px">
+      Overall, the price trajectory mirrors the relationship between financial fundamentals and market perception, showing how data-driven insight can transform uncertainty into a strategic opportunity.
+    </p>
+
+    <h2>Monthly Returns (presentation)</h2>
+    <div class="figure">
+      <canvas id="monthlyReturns" aria-label="Monthly returns chart"></canvas>
+    </div>
+
+    <div class="inference-box">
+      <strong>Interpretation:</strong>
+      <p style="margin:8px 0 0">
+        The monthly returns chart converts complex market activity into a simple, comparative visual. Each bar depicts how the stock’s performance shifted month-to-month, offering an accessible view of volatility and momentum.
+      </p>
+      <p style="margin:10px 0 0">
+        Positive spikes reflect strong investor sentiment and earnings optimism, while negative dips indicate consolidation periods or a reaction to economic events. The alternating cycle of growth and correction captures the rhythm of market behaviour — revealing that even in uncertainty, patterns emerge.
+      </p>
+      <p style="margin:10px 0 0">
+        By tracking these cycles, decision-makers gain valuable insight into risk management, timing strategies, and trend forecasting. This visualisation highlights the value of short-term data in shaping long-term investment confidence.
+      </p>
+    </div>
+
+    <h2>Conclusion</h2>
+    <p>
+      In financial analysis, numbers are more than mere statistics — they are reflections of human behavior, institutional strategy, and market psychology. The data from BANKBARODA’s 2024–2025 performance encapsulates how macroeconomic factors, investor confidence, and corporate governance converge to shape market value.
+    </p>
+    <p>
+      The closing price trend illustrates resilience amidst uncertainty, proving that even during volatile periods, strong fundamentals and informed leadership can sustain growth. The monthly return cycles, on the other hand, reveal how short-term fluctuations are natural responses to evolving market dynamics — reminders that every dip and rise carries insight, not just risk.
+    </p>
+    <p>
+      Together, these visuals underscore a central principle: data must not only inform but also inspire decision-making. When interpreted thoughtfully, analytics transforms from a descriptive tool into a strategic compass — guiding businesses, investors, and policymakers toward choices rooted in clarity rather than conjecture.
+    </p>
+
+    <footer class="medium-foot">
+      Published by Harshini G — Where Insight Meets Action.
+    </footer>
+
+    <!-- Optional comments / response CTA -->
+    <div style="margin:18px 0;padding:18px;border:1px solid #f3f3f3;border-radius:8px;background:#fff">
+      <strong>Responses</strong>
+      <div style="margin-top:10px;color:var(--muted)">No responses yet. Write a response</div>
+    </div>
+
+    <!-- Bottom recommended / footer could go here -->
+    <div style="height:40px"></div>
   </div>
 
-  <footer>Designed with glassmorphism & gradient tones · Visuals powered by Chart.js</footer>
-</main>
-
+<!-- Chart rendering scripts (sample placeholder data so charts appear) -->
 <script>
-/* ---------- DATA ---------- */
-/* full numeric data for charts */
-const data = [
-  {"Department":"Marketing","Stress":8,"Remote":10,"Productivity":72},
-  {"Department":"Sales","Stress":9,"Remote":0,"Productivity":68},
-  {"Department":"HR","Stress":5,"Remote":50,"Productivity":80},
-  {"Department":"IT","Stress":6,"Remote":60,"Productivity":77},
-  {"Department":"Design","Stress":4,"Remote":80,"Productivity":90},
-  {"Department":"Marketing","Stress":3,"Remote":70,"Productivity":88},
-  {"Department":"Sales","Stress":6,"Remote":20,"Productivity":75},
-  {"Department":"IT","Stress":4,"Remote":60,"Productivity":82},
-  {"Department":"HR","Stress":5,"Remote":50,"Productivity":76},
-  {"Department":"Design","Stress":3,"Remote":90,"Productivity":92},
-  {"Department":"Marketing","Stress":5,"Remote":40,"Productivity":79},
-  {"Department":"Sales","Stress":8,"Remote":0,"Productivity":70},
-  {"Department":"HR","Stress":2,"Remote":60,"Productivity":89},
-  {"Department":"IT","Stress":6,"Remote":50,"Productivity":74},
-  {"Department":"Design","Stress":4,"Remote":80,"Productivity":85},
-  {"Department":"Marketing","Stress":3,"Remote":70,"Productivity":91},
-  {"Department":"Sales","Stress":7,"Remote":10,"Productivity":73},
-  {"Department":"HR","Stress":3,"Remote":60,"Productivity":86},
-  {"Department":"IT","Stress":5,"Remote":50,"Productivity":78},
-  {"Department":"Design","Stress":2,"Remote":90,"Productivity":94}
-];
+  // Time-series sample data (replace with your real series)
+  const ctxTime = document.getElementById('closeTime').getContext('2d');
+  const labelsTime = ['Sep 24','Oct 24','Nov 24','Dec 24','Jan 25','Feb 25','Mar 25','Apr 25','May 25','Jun 25','Jul 25','Aug 25','Sep 25'];
+  const valuesTime = [230, 245, 251, 240, 263, 256, 210, 196, 232, 253, 249, 235, 238];
 
-/* ---------- BAR: average stress by department ---------- */
-const groups = {};
-data.forEach(r => {
-  if (!groups[r.Department]) groups[r.Department]=[];
-  groups[r.Department].push(Number(r.Stress));
-});
-const deptLabels = Object.keys(groups);
-const deptAvg = deptLabels.map(l => +(groups[l].reduce((a,b)=>a+b,0)/groups[l].length).toFixed(2));
+  new Chart(ctxTime, {
+    type: 'line',
+    data: {
+      labels: labelsTime,
+      datasets: [{
+        label: 'Close Price',
+        data: valuesTime,
+        borderColor: '#2563eb',
+        backgroundColor: 'rgba(37,99,235,0.08)',
+        tension: 0.35,
+        pointRadius: 3,
+        borderWidth: 2,
+        fill: true
+      }]
+    },
+    options: {
+      plugins: { legend: { display: false } },
+      scales: { y: { beginAtZero: false } },
+      responsive: true,
+      maintainAspectRatio: false
+    }
+  });
 
-const barCtx = document.getElementById('barDept').getContext('2d');
-new Chart(barCtx, {
-  type: 'bar',
-  data: { labels: deptLabels, datasets: [{ data: deptAvg, backgroundColor: ['#2563eb','#3b82f6','#60a5fa','#38bdf8','#22d3ee'], borderRadius:8 }] },
-  options: { plugins: { legend:{display:false} }, scales:{ y:{ beginAtZero:true, max:10 } } }
-});
-document.getElementById('barInference').innerHTML =
-  "<strong>Inference</strong><p>1) Sales and Marketing show higher stress averages than HR and Design.<br>2) Differences may reflect role pressures or target-driven work in those teams.<br>3) Department-focused wellbeing programs could help reduce stress and improve retention.</p>";
+  // Monthly returns sample bar chart
+  const ctxBar = document.getElementById('monthlyReturns').getContext('2d');
+  const labelsM = ['Sep','Oct','Nov','Dec','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep'];
+  const returnsData = [2.1, 3.2, 5.0, -1.8, 4.9, 6.1, -7.2, 5.3, 3.8, -0.9, 1.5, 2.2, 1.9];
 
-/* ---------- LINE: avg productivity vs remote % ---------- */
-const remoteGroups = {};
-data.forEach(r=>{
-  const k = Number(r.Remote);
-  if(!remoteGroups[k]) remoteGroups[k]=[];
-  remoteGroups[k].push(Number(r.Productivity));
-});
-const remoteKeys = Object.keys(remoteGroups).map(Number).sort((a,b)=>a-b);
-const remoteAvg = remoteKeys.map(k => +(remoteGroups[k].reduce((a,b)=>a+b,0)/remoteGroups[k].length).toFixed(2));
-
-const lineCtx = document.getElementById('lineRemote').getContext('2d');
-new Chart(lineCtx, {
-  type:'line',
-  data:{ labels: remoteKeys.map(k=>k+'%'), datasets:[{ data: remoteAvg, borderColor:'#2563eb', tension:0.28, borderWidth:2, pointRadius:3, fill:false }]},
-  options:{ plugins:{ legend:{display:false} }, scales:{ y:{ beginAtZero:true, max:100 } } }
-});
-document.getElementById('lineInference').innerHTML =
-  "<strong>Inference</strong><p>1) Productivity generally increases as remote percentage rises, peaking around 60–80%.<br>2) Beyond that the effect levels off, suggesting hybrid balance is optimal.<br>3) Policies that combine flexibility with team touchpoints may sustain productivity and wellbeing.</p>";
+  new Chart(ctxBar, {
+    type: 'bar',
+    data: {
+      labels: labelsM,
+      datasets: [{
+        label: 'Monthly Return (%)',
+        data: returnsData,
+        backgroundColor: returnsData.map(v => v >= 0 ? '#10b981' : '#ef4444'),
+        borderRadius: 6
+      }]
+    },
+    options: {
+      plugins: { legend: { display: false } },
+      scales: { y: { beginAtZero: true } },
+      responsive: true,
+      maintainAspectRatio: false
+    }
+  });
 </script>
 </body>
 </html>
+
 
